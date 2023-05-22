@@ -36,8 +36,12 @@
     }
 
     currentQuestionIndex++;
+     if (currentQuestionIndex === questions.length) {
+      // Quiz completed
+      quizCompleted = true;
+      calculateScore();
   }
-
+  }
   // Calculate the user's score at the end of the quiz
   function calculateScore() {
     score = 0;
