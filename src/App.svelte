@@ -78,8 +78,10 @@
         </li>
       {/each}
     </ul>
-
-    <button on:click={nextQuestion}>Next</button>
+ {#if questions[currentQuestionIndex].userAnswer !== null}
+      <p>Your answer: {questions[currentQuestionIndex].userAnswer}</p>
+    {/if}
+    <button on:click={nextQuestion} disabled={questions[currentQuestionIndex].userAnswer === null}>Next</button>
   </div>
 {:else}
   <div>
