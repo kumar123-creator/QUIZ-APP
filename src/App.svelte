@@ -4,61 +4,43 @@
   const questions = [
     {
       id: 1,
-      question: 'Who has scored the first century in IPL?',
-      answers: ['Mccllumm', 'Raina', 'Kohli', 'Rohit'],
-      correctAnswer: 'Mccllumm',
-      userAnswer: null
+      question: 'What is the capital of France?',
+      options: ['Paris', 'London', 'Berlin', 'Rome'],
+      correctAnswer: 'Paris',
+      selectedAnswer: null,
     },
     {
-     
       id: 2,
-     
-      question: 'Which team has the largest fan base in IPL?',
-      answers: ['KKR', 'CSK', 'RCB', 'MI'],
-      correctAnswer: 'CSK',
-      userAnswer: null
+      question: 'Which planet is known as the Red Planet?',
+      options: ['Mars', 'Jupiter', 'Venus', 'Mercury'],
+      correctAnswer: 'Mars',
+      selectedAnswer: null,
     },
     {
       id: 3,
-     question: 'Who has taken most wickets in an IPL season?',
-      answers: ['Bravo', 'Bumrah', 'Malinga', 'Chahal'],
-      correctAnswer: 'Bravo',
-      userAnswer: null
-    }
-    // Add more questions here...
+      question: 'Who painted the Mona Lisa?',
+      options: ['Leonardo da Vinci', 'Pablo Picasso', 'Vincent van Gogh', 'Michelangelo'],
+      correctAnswer: 'Leonardo da Vinci',
+      selectedAnswer: null,
+    },
   ];
 
-  let currentQuestionIndex = 0;
   let score = 0;
-  let quizCompleted = false;
 
-  function selectAnswer(answer) {
-    questions[currentQuestionIndex].userAnswer = answer;
-  }
-
-  function nextQuestion() {
-    currentQuestionIndex++;
-
-    if (currentQuestionIndex === questions.length) {
-      // Quiz completed
-      quizCompleted = true;
-      calculateScore();
-    }
+  function selectAnswer(questionId, answer) {
+    const question = questions.find((q) => q.id === questionId);
+    question.selectedAnswer = answer;
   }
 
   function calculateScore() {
-    score = questions.reduce((totalScore, question) => {
-      if (question.userAnswer === question.correctAnswer) {
-        return totalScore + 1;
-      } else {
-        return totalScore;
-      }
+    score = questions.reduce((acc, question) => {
+      return question.selectedAnswer === question.correctAnswer ? acc + 1 : acc;
     }, 0);
   }
 
-  // Optional: Initialize quiz or perform other actions on mount
+  // Optional: Initialize data or perform other actions on mount
   onMount(() => {
-    // Initialize quiz if needed
+    // Initialize data if needed
   });
 </script>
 
@@ -66,35 +48,30 @@
   /* Add Bootstrap or Tailwind CSS classes for styling */
 </style>
 
-{#if !quizCompleted}
-  <div>
-    <h2>Question {currentQuestionIndex + 1}</h2>
-    <p>{questions[currentQuestionIndex].question}</p>
+{#each questions as question}
+  <div class="question">
+    <h3>{question.question}</h3>
     <ul>
-      {#each questions[currentQuestionIndex].options as option}
+      {#each question.options as option}
         <li>
           <label>
             <input
               type="radio"
-              name="answer"
+              name={`question-${question.id}`}
               value={option}
-              on:change={() => selectAnswer(option)}
-              disabled={questions[currentQuestionIndex].userAnswer !== null}
+              bind:checked={question.selectedAnswer}
+              on:change={() => selectAnswer(question.id, option)}
             />
             {option}
           </label>
         </li>
       {/each}
     </ul>
-    {#if questions[currentQuestionIndex].userAnswer !== null}
-      <p>Your answer: {questions[currentQuestionIndex].userAnswer}</p>
-    {/if}
-    <button on:click={nextQuestion} disabled={questions[currentQuestionIndex].userAnswer === null}>Next</button>
   </div>
-{:else}
-  <div>
-    <h2>Quiz completed</h2>
-    <p>Your score: {score}/{questions.length}</p>
-  </div>
-{/if}
+{/each}
 
+<button on:click={calculateScore}>Submit</button>
+
+{#if score > 0}
+  <p>Your score: {score} out of {questions.length}</p>
+{/if}
