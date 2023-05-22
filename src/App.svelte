@@ -1,94 +1,94 @@
 <script>
-  let questions = [
+  // Quiz data
+  const questions = [
     {
       id: 1,
-      question: "What is the capital of France?",
-      options: ["Paris", "London", "Berlin"],
-      correctAnswer: "Paris",
-      selectedAnswer: ""
+      question: 'Who has scored the first century in IPL?',
+      options: ['Mccllumm', 'Raina', 'Kohli', 'Rohit'],
+      correctAnswer: 'Mccllumm',
+      userAnswer: null
     },
     {
       id: 2,
-      question: "Who painted the Mona Lisa?",
-      options: ["Leonardo da Vinci", "Pablo Picasso", "Vincent van Gogh"],
-      correctAnswer: "Leonardo da Vinci",
-      selectedAnswer: ""
+      question: 'Which team has the largest fan base in IPL?',
+      options: ['KKR', 'CSK', 'RCB', 'MI'],
+      correctAnswer: 'CSK',
+      userAnswer: null
     },
     {
       id: 3,
-      question: "What is the largest planet in our solar system?",
-      options: ["Jupiter", "Saturn", "Mars"],
-      correctAnswer: "Jupiter",
-      selectedAnswer: ""
+      question: 'Who has taken the most wickets in an IPL season?',
+      options: ['Bravo', 'Bumrah', 'Malinga', 'Chahal'],
+      correctAnswer: 'Bravo',
+      userAnswer: null
     }
+    // Add more questions here...
   ];
 
   let currentQuestionIndex = 0;
   let score = 0;
+  let quizCompleted = false;
 
   function selectAnswer(answer) {
-    questions[currentQuestionIndex].selectedAnswer = answer;
+    questions[currentQuestionIndex].userAnswer = answer;
   }
 
   function nextQuestion() {
-    if (questions[currentQuestionIndex].selectedAnswer === "") {
-      // Do not proceed if the user hasn't selected an answer
-      return;
-    }
-
-    if (currentQuestionIndex < questions.length - 1) {
+    if (questions[currentQuestionIndex].userAnswer !== null) {
+      // Proceed to the next question only if the answer is selected
       currentQuestionIndex++;
-    } else {
-      // Quiz finished, calculate score
-      score = calculateScore();
+
+      if (currentQuestionIndex === questions.length) {
+        // Quiz completed
+        quizCompleted = true;
+        calculateScore();
+      }
     }
   }
 
   function calculateScore() {
-    let correctAnswers = 0;
-    for (const question of questions) {
-      if (question.selectedAnswer === question.correctAnswer) {
-        correctAnswers++;
+    score = questions.reduce((totalScore, question) => {
+      if (question.userAnswer === question.correctAnswer) {
+        return totalScore + 1;
+      } else {
+        return totalScore;
       }
-    }
-    return correctAnswers;
-  }
-
-  function resetQuiz() {
-    currentQuestionIndex = 0;
-    score = 0;
-    for (const question of questions) {
-      question.selectedAnswer = "";
-    }
+    }, 0);
   }
 </script>
 
 <style>
-  /* Add CSS styles for the quiz app */
+  /* Add Bootstrap or Tailwind CSS classes for styling */
 </style>
 
-{#if currentQuestionIndex < questions.length}
+{#if !quizCompleted}
   <div>
-    <h3>Question {currentQuestionIndex + 1}</h3>
+    <h2>Question {currentQuestionIndex + 1}</h2>
     <p>{questions[currentQuestionIndex].question}</p>
-
     <ul>
       {#each questions[currentQuestionIndex].options as option}
         <li>
           <label>
-            <input type="radio" name="answer" bind:group={questions[currentQuestionIndex].selectedAnswer} value={option} on:change={() => selectAnswer(option)} />
+            <input
+              type="radio"
+              name="answer"
+              value={option}
+              on:change={() => selectAnswer(option)}
+              disabled={questions[currentQuestionIndex].userAnswer !== null}
+            />
             {option}
           </label>
         </li>
       {/each}
     </ul>
-
-    <button on:click={nextQuestion}>Next</button>
+    {#if questions[currentQuestionIndex].userAnswer !== null}
+      <p>Your answer: {questions[currentQuestionIndex].userAnswer}</p>
+    {/if}
+    <button on:click={nextQuestion} disabled={questions[currentQuestionIndex].userAnswer === null}>Next</button>
   </div>
 {:else}
   <div>
-    <h3>Quiz Finished!</h3>
-    <p>Your score: {score} out of {questions.length}</p>
-    <button on:click={resetQuiz}>Restart Quiz</button>
+    <h2>Quiz completed</h2>
+    <p>Your score: {score}/{questions.length}</p>
   </div>
 {/if}
