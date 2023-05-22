@@ -1,77 +1,85 @@
 <script>
   import { onMount } from 'svelte';
 
-  const questions = [
+  let questions = [
     {
-      id: 1,
       question: 'What is the capital of France?',
-      options: ['Paris', 'London', 'Berlin', 'Rome'],
+      options: ['Paris', 'London', 'Berlin', 'Madrid'],
       correctAnswer: 'Paris',
-      selectedAnswer: null,
+      selectedAnswer: null
     },
     {
-      id: 2,
-      question: 'Which planet is known as the Red Planet?',
-      options: ['Mars', 'Jupiter', 'Venus', 'Mercury'],
-      correctAnswer: 'Mars',
-      selectedAnswer: null,
-    },
-    {
-      id: 3,
       question: 'Who painted the Mona Lisa?',
       options: ['Leonardo da Vinci', 'Pablo Picasso', 'Vincent van Gogh', 'Michelangelo'],
       correctAnswer: 'Leonardo da Vinci',
-      selectedAnswer: null,
+      selectedAnswer: null
     },
+    {
+      question: 'What is the largest planet in our solar system?',
+      options: ['Jupiter', 'Saturn', 'Mars', 'Earth'],
+      correctAnswer: 'Jupiter',
+      selectedAnswer: null
+    }
   ];
 
+  let currentQuestion = 0;
   let score = 0;
 
-  function selectAnswer(questionId, answer) {
-    const question = questions.find((q) => q.id === questionId);
-    question.selectedAnswer = answer;
+  function selectAnswer(answer) {
+    questions[currentQuestion].selectedAnswer = answer;
+  }
+
+  function nextQuestion() {
+    if (questions[currentQuestion].selectedAnswer === null) {
+      alert('Please select an answer before proceeding.');
+      return;
+    }
+
+    if (currentQuestion < questions.length - 1) {
+      currentQuestion++;
+    } else {
+      calculateScore();
+    }
   }
 
   function calculateScore() {
-    score = questions.reduce((acc, question) => {
-      return question.selectedAnswer === question.correctAnswer ? acc + 1 : acc;
+    score = questions.reduce((totalScore, question) => {
+      if (question.selectedAnswer === question.correctAnswer) {
+        return totalScore + 1;
+      } else {
+        return totalScore;
+      }
     }, 0);
   }
 
-  // Optional: Initialize data or perform other actions on mount
+  // Optional: Initialize quiz or perform other actions on mount
   onMount(() => {
-    // Initialize data if needed
+    // Initialize quiz if needed
   });
 </script>
 
 <style>
-  /* Add Bootstrap or Tailwind CSS classes for styling */
+  /* Add CSS styling for the quiz app */
 </style>
 
-{#each questions as question}
-  <div class="question">
-    <h3>{question.question}</h3>
+{#if currentQuestion < questions.length}
+  <div>
+    <h2>{questions[currentQuestion].question}</h2>
     <ul>
-      {#each question.options as option}
+      {#each questions[currentQuestion].options as option}
         <li>
           <label>
-            <input
-              type="radio"
-              name={`question-${question.id}`}
-              value={option}
-              bind:checked={question.selectedAnswer}
-              on:change={() => selectAnswer(question.id, option)}
-            />
+            <input type="radio" name="answer" value={option} on:change={() => selectAnswer(option)} />
             {option}
           </label>
         </li>
       {/each}
     </ul>
+    <button on:click={nextQuestion}>Next</button>
   </div>
-{/each}
-
-<button on:click={calculateScore}>Submit</button>
-
-{#if score > 0}
-  <p>Your score: {score} out of {questions.length}</p>
+{:else}
+  <div>
+    <h2>Quiz completed!</h2>
+    <p>Your score: {score}/{questions.length}</p>
+  </div>
 {/if}
