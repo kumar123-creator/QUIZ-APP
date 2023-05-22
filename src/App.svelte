@@ -84,4 +84,4 @@
 
     <button on:click={calculateScore}>Try Again</button>
   </div>
-{/if}<
+{/if}
