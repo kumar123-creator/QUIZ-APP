@@ -1,79 +1,82 @@
 <script>
   import { onMount } from 'svelte';
 
-  const questions = [
+  // Define the quiz questions and answers
+  const quizQuestions = [
     {
-      id: 1,
-      question: 'Who is the first player to score a century in IPL?',
-      options: ['Mccllumm', 'Raina', 'Kohli', 'Rohit'],
-      correctAnswer: 'Mccllumm',
-      selectedAnswer: ''
+      question: 'What is the capital of France?',
+      answers: ['Paris', 'Madrid', 'London', 'Rome'],
+      correctAnswer: 'Paris',
+      userAnswer: null
     },
     {
-      id: 2,
-      question: 'Which team has largest fan base in IPL?',
-      options: ['MI', 'CSK', 'RCB', 'SRH'],
-      correctAnswer: 'CSK',
-      selectedAnswer: ''
+      question: 'Who painted the Mona Lisa?',
+      answers: ['Leonardo da Vinci', 'Pablo Picasso', 'Vincent van Gogh', 'Claude Monet'],
+      correctAnswer: 'Leonardo da Vinci',
+      userAnswer: null
     },
-    {
-      id: 3,
-      question: 'Who is the fastest player to reach 1000 runs in IPL?',
-      options: ['Kohli', 'Raina', 'Gayle', 'Gaikwad'],
-      correctAnswer: 'Gaikwad',
-      selectedAnswer: ''
-    }
+    // Add more questions here...
   ];
 
   let currentQuestionIndex = 0;
   let score = 0;
 
   function selectAnswer(answer) {
-    questions[currentQuestionIndex].selectedAnswer = answer;
+    quizQuestions[currentQuestionIndex].userAnswer = answer;
   }
 
   function nextQuestion() {
-    if (currentQuestionIndex < questions.length - 1) {
-      currentQuestionIndex++;
-    } else {
-      calculateScore();
+    if (quizQuestions[currentQuestionIndex].userAnswer === quizQuestions[currentQuestionIndex].correctAnswer) {
+      score++;
     }
+
+    currentQuestionIndex++;
   }
 
+  // Calculate the user's score at the end of the quiz
   function calculateScore() {
-    score = questions.reduce((totalScore, question) => {
-      if (question.selectedAnswer === question.correctAnswer) {
-        return totalScore + 1;
+    score = 0;
+
+    quizQuestions.forEach(question => {
+      if (question.userAnswer === question.correctAnswer) {
+        score++;
       }
-      return totalScore;
-    }, 0);
+    });
   }
 
-  // Optional: Initialize quiz or perform other actions on mount
+  // Optional: Initialize quiz data or perform other actions on mount
   onMount(() => {
     // Initialize quiz data if needed
   });
 </script>
 
 <style>
-  /* Add Bootstrap or Tailwind CSS classes for styling */
+  /* Add CSS styles for the quiz app */
 </style>
 
-{#if currentQuestionIndex < questions.length}
-  <h2>Question {currentQuestionIndex + 1}</h2>
-  <p>{questions[currentQuestionIndex].question}</p>
-
+{#if currentQuestionIndex < quizQuestions.length}
   <div>
-    {#each questions[currentQuestionIndex].options as option}
-      <label>
-        <input type="radio" bind:group={questions[currentQuestionIndex].selectedAnswer} value={option} on:change={() => selectAnswer(option)} />
-        {option}
-      </label>
-    {/each}
-  </div>
+    <h2>Question {currentQuestionIndex + 1}</h2>
+    <p>{quizQuestions[currentQuestionIndex].question}</p>
 
-  <button on:click={nextQuestion}>Next</button>
+    <ul>
+      {#each quizQuestions[currentQuestionIndex].answers as answer}
+        <li>
+          <label>
+            <input type="radio" bind:group={quizQuestions[currentQuestionIndex].userAnswer} value={answer} on:change={() => selectAnswer(answer)} />
+            {answer}
+          </label>
+        </li>
+      {/each}
+    </ul>
+
+    <button on:click={nextQuestion}>Next</button>
+  </div>
 {:else}
-  <h2>Quiz Completed</h2>
-  <p>Your score: {score} out of {questions.length}</p>
+  <div>
+    <h2>Quiz Complete!</h2>
+    <p>Your score: {score}/{quizQuestions.length}</p>
+
+    <button on:click={calculateScore}>Try Again</button>
+  </div>
 {/if}
