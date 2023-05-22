@@ -1,67 +1,94 @@
 <script>
-  let currentQuestion = 0;
-  let score = 0;
-
-  const questions = [
+  let questions = [
     {
-      question: 'Question 1',
-      options: ['Option 1', 'Option 2', 'Option 3'],
-      correctAnswer: 0
+      id: 1,
+      question: "What is the capital of France?",
+      options: ["Paris", "London", "Berlin"],
+      correctAnswer: "Paris",
+      selectedAnswer: ""
     },
     {
-      question: 'Question 2',
-      options: ['Option 1', 'Option 2', 'Option 3'],
-      correctAnswer: 1
+      id: 2,
+      question: "Who painted the Mona Lisa?",
+      options: ["Leonardo da Vinci", "Pablo Picasso", "Vincent van Gogh"],
+      correctAnswer: "Leonardo da Vinci",
+      selectedAnswer: ""
     },
     {
-      question: 'Question 3',
-      options: ['Option 1', 'Option 2', 'Option 3'],
-      correctAnswer: 2
+      id: 3,
+      question: "What is the largest planet in our solar system?",
+      options: ["Jupiter", "Saturn", "Mars"],
+      correctAnswer: "Jupiter",
+      selectedAnswer: ""
     }
   ];
 
-  function selectAnswer(event) {
-    const selectedOption = event.target.value;
-    const currentQuestionObj = questions[currentQuestion];
+  let currentQuestionIndex = 0;
+  let score = 0;
 
-    if (parseInt(selectedOption) === currentQuestionObj.correctAnswer) {
-      score++;
+  function selectAnswer(answer) {
+    questions[currentQuestionIndex].selectedAnswer = answer;
+  }
+
+  function nextQuestion() {
+    if (questions[currentQuestionIndex].selectedAnswer === "") {
+      // Do not proceed if the user hasn't selected an answer
+      return;
     }
 
-    if (currentQuestion < questions.length - 1) {
-      currentQuestion++;
+    if (currentQuestionIndex < questions.length - 1) {
+      currentQuestionIndex++;
     } else {
-      // End of quiz
-      alert('Quiz completed! Your score: ' + score);
+      // Quiz finished, calculate score
+      score = calculateScore();
+    }
+  }
+
+  function calculateScore() {
+    let correctAnswers = 0;
+    for (const question of questions) {
+      if (question.selectedAnswer === question.correctAnswer) {
+        correctAnswers++;
+      }
+    }
+    return correctAnswers;
+  }
+
+  function resetQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    for (const question of questions) {
+      question.selectedAnswer = "";
     }
   }
 </script>
 
 <style>
-  /* Add CSS styling for the quiz app */
+  /* Add CSS styles for the quiz app */
 </style>
 
-<h1>Quiz App</h1>
-
-{#if currentQuestion < questions.length}
+{#if currentQuestionIndex < questions.length}
   <div>
-    <h2>{questions[currentQuestion].question}</h2>
+    <h3>Question {currentQuestionIndex + 1}</h3>
+    <p>{questions[currentQuestionIndex].question}</p>
+
     <ul>
-      {#each questions[currentQuestion].options as option, index}
+      {#each questions[currentQuestionIndex].options as option}
         <li>
           <label>
-            <input
-              type="radio"
-              name="answer"
-              value={index}
-              on:change={selectAnswer}
-            />
+            <input type="radio" name="answer" bind:group={questions[currentQuestionIndex].selectedAnswer} value={option} on:change={() => selectAnswer(option)} />
             {option}
           </label>
         </li>
       {/each}
     </ul>
+
+    <button on:click={nextQuestion}>Next</button>
   </div>
 {:else}
-  <p>Quiz completed! Your score: {score}</p>
+  <div>
+    <h3>Quiz Finished!</h3>
+    <p>Your score: {score} out of {questions.length}</p>
+    <button on:click={resetQuiz}>Restart Quiz</button>
+  </div>
 {/if}
