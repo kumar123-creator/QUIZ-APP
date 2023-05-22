@@ -8,7 +8,7 @@
         "Kohli",
         "Rohit"
       ],
-      "correctIndex": 1
+      "correctIndex": 0
     },
     {
       "question": "Which team has largest fan base in IPL?",
@@ -18,7 +18,7 @@
         "RCB",
         "MI"
       ],
-      "correctIndex": 2
+      "correctIndex": 1
     },
     {
       "question": "Which team has won most IPL trophies?",
@@ -28,7 +28,7 @@
         "MI",
         "SRH"
       ],
-      "correctIndex": 3
+      "correctIndex": 2
     },
     {
       "question": "Who has scored most centuries in IPL?",
@@ -38,7 +38,7 @@
         "Kohli",
         "Raina"
       ],
-      "correctIndex": 2
+      "correctIndex": 1
     },
     {
       "question": "Who has taken most wickets in an IPL season ?",
@@ -48,7 +48,7 @@
         "Bravo",
         "Malinga"
       ],
-      "correctIndex": 3
+      "correctIndex": 2
     }
   ];
   let answers = new Array(questions.length).fill(null);
