@@ -1,54 +1,54 @@
 <script>
   let questions = [
     {
-      "question": "Which of the following special symbol allowed in a variable name?",
+      "question": "Who has scored first century in IPL?",
       "options": [
-        "* (asterisk)",
-        "| (pipeline)",
-        "- (hyphen)",
-        "_ (underscore)"
-      ],
-      "correctIndex": 3
-    },
-    {
-      "question": "Which of the following correctly shows the hierarchy of arithmetic operations in C?",
-      "options": [
-        "/ + * -",
-        "* - / +",
-        "+ - / *",
-        "/ * + -"
-      ],
-      "correctIndex": 3
-    },
-    {
-      "question": "Which header file should be included to use functions like malloc() and calloc()?",
-      "options": [
-        "memory.h",
-        "stdlib.h",
-        "string.h",
-        "dos.h"
+        "Mccllumm",
+        "Raina",
+        "Kohli",
+        "Rohit"
       ],
       "correctIndex": 1
     },
     {
-      "question": "Which bitwise operator is suitable for turning off a particular bit in a number?",
+      "question": "Which team has largest fan base in IPL?",
       "options": [
-        "&& operator",
-        "& operator",
-        "|| operator",
-        "! operator"
-      ],
-      "correctIndex": 1
-    },
-    {
-      "question": "What function should be used to free the memory allocated by calloc() ?",
-      "options": [
-        "dealloc();",
-        "malloc(variable_name, 0)",
-        "free();",
-        "memalloc(variable_name, 0)"
+        "KKR",
+        "CSK",
+        "RCB",
+        "MI"
       ],
       "correctIndex": 2
+    },
+    {
+      "question": "Which team has won most IPL trophies?",
+      "options": [
+        "CSK",
+        "KKR",
+        "MI",
+        "SRH"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "question": "Who has scored most centuries in IPL?",
+      "options": [
+        "Rohit",
+        "Gayle",
+        "Kohli",
+        "Raina"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "question": "Who has taken most wickets in an IPL season ?",
+      "options": [
+        "Bumrah",
+        "Chahal",
+        "Bravo",
+        "Malinga"
+      ],
+      "correctIndex": 3
     }
   ];
   let answers = new Array(questions.length).fill(null);
