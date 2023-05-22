@@ -4,23 +4,23 @@
   const questions = [
     {
       id: 1,
-      question: 'What is the capital of France?',
-      options: ['Paris', 'Madrid', 'Rome', 'Berlin'],
-      correctAnswer: 'Paris',
+      question: 'Who is the first player to score a century in IPL?',
+      options: ['Mccllumm', 'Raina', 'Kohli', 'Rohit'],
+      correctAnswer: 'Mccllumm',
       selectedAnswer: ''
     },
     {
       id: 2,
-      question: 'Which planet is known as the Red Planet?',
-      options: ['Venus', 'Mars', 'Jupiter', 'Saturn'],
-      correctAnswer: 'Mars',
+      question: 'Which team has largest fan base in ILP?',
+      options: ['MI', 'CSK', 'RCB', 'SRH'],
+      correctAnswer: 'CSK',
       selectedAnswer: ''
     },
     {
       id: 3,
-      question: 'What is the tallest mountain in the world?',
-      options: ['Mount Everest', 'K2', 'Kangchenjunga', 'Makalu'],
-      correctAnswer: 'Mount Everest',
+      question: 'Who is the fastest player to reach 1000 runs in IPL?',
+      options: ['Kohli', 'Raina', 'Gayle', 'Gaikwad'],
+      correctAnswer: 'Gaikwad',
       selectedAnswer: ''
     }
   ];
