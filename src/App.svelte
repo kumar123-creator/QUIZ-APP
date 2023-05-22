@@ -1,5 +1,6 @@
 <script>
-  // Quiz data
+  import { onMount } from 'svelte';
+
   const questions = [
     {
       id: 1,
@@ -34,15 +35,12 @@
   }
 
   function nextQuestion() {
-    if (questions[currentQuestionIndex].userAnswer !== null) {
-      // Proceed to the next question only if the answer is selected
-      currentQuestionIndex++;
+    currentQuestionIndex++;
 
-      if (currentQuestionIndex === questions.length) {
-        // Quiz completed
-        quizCompleted = true;
-        calculateScore();
-      }
+    if (currentQuestionIndex === questions.length) {
+      // Quiz completed
+      quizCompleted = true;
+      calculateScore();
     }
   }
 
@@ -55,6 +53,20 @@
       }
     }, 0);
   }
+
+  function resetQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    quizCompleted = false;
+    questions.forEach(question => {
+      question.userAnswer = null;
+    });
+  }
+
+  // Optional: Initialize quiz or perform other actions on mount
+  onMount(() => {
+    // Initialize quiz if needed
+  });
 </script>
 
 <style>
@@ -90,5 +102,6 @@
   <div>
     <h2>Quiz completed</h2>
     <p>Your score: {score}/{questions.length}</p>
+    <button on:click={resetQuiz}>Reset Quiz</button>
   </div>
 {/if}
