@@ -1,21 +1,26 @@
 <script>
-  let questions = [
+  import { onMount } from 'svelte';
+
+  const questions = [
     {
+      id: 1,
       question: 'What is the capital of France?',
-      options: ['Paris', 'London', 'Madrid', 'Berlin'],
+      options: ['Paris', 'Madrid', 'Rome', 'Berlin'],
       correctAnswer: 'Paris',
       selectedAnswer: ''
     },
     {
+      id: 2,
       question: 'Which planet is known as the Red Planet?',
-      options: ['Mars', 'Venus', 'Jupiter', 'Mercury'],
+      options: ['Venus', 'Mars', 'Jupiter', 'Saturn'],
       correctAnswer: 'Mars',
       selectedAnswer: ''
     },
     {
-      question: 'What is the largest ocean in the world?',
-      options: ['Pacific Ocean', 'Atlantic Ocean', 'Indian Ocean', 'Arctic Ocean'],
-      correctAnswer: 'Pacific Ocean',
+      id: 3,
+      question: 'What is the tallest mountain in the world?',
+      options: ['Mount Everest', 'K2', 'Kangchenjunga', 'Makalu'],
+      correctAnswer: 'Mount Everest',
       selectedAnswer: ''
     }
   ];
@@ -23,8 +28,8 @@
   let currentQuestionIndex = 0;
   let score = 0;
 
-  function selectAnswer(option) {
-    questions[currentQuestionIndex].selectedAnswer = option;
+  function selectAnswer(answer) {
+    questions[currentQuestionIndex].selectedAnswer = answer;
   }
 
   function nextQuestion() {
@@ -39,30 +44,36 @@
     score = questions.reduce((totalScore, question) => {
       if (question.selectedAnswer === question.correctAnswer) {
         return totalScore + 1;
-      } else {
-        return totalScore;
       }
+      return totalScore;
     }, 0);
   }
+
+  // Optional: Initialize quiz or perform other actions on mount
+  onMount(() => {
+    // Initialize quiz data if needed
+  });
 </script>
 
 <style>
-  /* Add styling for the quiz app */
+  /* Add Bootstrap or Tailwind CSS classes for styling */
 </style>
 
 {#if currentQuestionIndex < questions.length}
   <h2>Question {currentQuestionIndex + 1}</h2>
   <p>{questions[currentQuestionIndex].question}</p>
 
-  <ul>
+  <div>
     {#each questions[currentQuestionIndex].options as option}
-      <li on:click={() => selectAnswer(option)}>{option}</li>
+      <label>
+        <input type="radio" bind:group={questions[currentQuestionIndex].selectedAnswer} value={option} on:change={() => selectAnswer(option)} />
+        {option}
+      </label>
     {/each}
-  </ul>
+  </div>
 
   <button on:click={nextQuestion}>Next</button>
 {:else}
   <h2>Quiz Completed</h2>
-  <p>Your Score: {score}/{questions.length}</p>
+  <p>Your score: {score} out of {questions.length}</p>
 {/if}
-
