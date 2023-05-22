@@ -11,7 +11,7 @@
     },
     {
       id: 2,
-      question: 'Which team has largest fan base in ILP?',
+      question: 'Which team has largest fan base in IPL?',
       options: ['MI', 'CSK', 'RCB', 'SRH'],
       correctAnswer: 'CSK',
       selectedAnswer: ''
