@@ -50,8 +50,6 @@
       {/each}
       <button type="submit">Submit</button>
     </form>
-  {:else}
-    <p>Loading form fields...</p>
   {/if}
 </main>
 
